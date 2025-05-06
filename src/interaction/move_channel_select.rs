@@ -22,7 +22,7 @@ pub const CUSTOM_ID: &str = "move_channel";
 impl<'a> InteractionContext<'a> {
     pub async fn wait_for_channel_select_interaction(&self) -> Result<Channel> {
         self.handle
-            .defer_with_behavior(DeferVisibility::Ephemeral, DeferBehavior::Update)
+            .defer_component(DeferVisibility::Ephemeral, DeferBehavior::Update)
             .await?;
         let channel_select_message = self
             .followup_with_channel_select_menu(
@@ -131,7 +131,7 @@ impl Context {
         if !permissions.contains(required_permissions) {
             return Err(CustomError::SendMessagesPermissionMissing.into());
         }
-
+        
         Ok(channel)
     }
 }

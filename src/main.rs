@@ -29,13 +29,27 @@ use crate::interaction::set_commands;
 mod interaction;
 mod message;
 
-const TEST_GUILD_ID: Id<GuildMarker> = Id::new(903_367_565_349_384_202);
-const LOGGING_CHANNEL_ID: Id<ChannelMarker> = Id::new(1_002_953_459_890_397_287);
+const TEST_GUILD_ID: Id<GuildMarker> = Id::new(1325055758504562718);
+const LOGGING_CHANNEL_ID: Id<ChannelMarker> = Id::new(1368913295347552367);
+
+
 
 const REQUIRED_PERMISSIONS: Permissions = Permissions::MANAGE_WEBHOOKS
     .union(Permissions::VIEW_CHANNEL)
     .union(Permissions::MANAGE_MESSAGES)
     .union(Permissions::READ_MESSAGE_HISTORY);
+
+#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
+pub enum MessageInteractError{
+    #[error("Both messages must be in the same channel")]
+    NotInSameChannel,
+    #[error("You can't specify both {0} and {1} at the same time")]
+    NotBoth(String, String),
+    #[error("Please send discord message link")]
+    IdNotFoundLink,
+    #[error("Can't be the same value")]
+    SameValueForId,
+}
 
 #[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum Error {
@@ -78,7 +92,6 @@ struct Context {
 impl Context {
     async fn handle_event(&self, event: Event) {
         self.standby.process(&event);
-
         if let Event::InteractionCreate(interaction) = event {
             self.handle_interaction(interaction.0).await;
         }
@@ -88,7 +101,6 @@ impl Context {
 #[tokio::main]
 async fn main() -> Result<()> {
     dotenvy::dotenv()?;
-
     let (mut bot, mut shards) = Bot::new(
         env::var("BOT_TOKEN")?,
         Intents::empty(),
