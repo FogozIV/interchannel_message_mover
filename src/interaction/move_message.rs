@@ -25,7 +25,7 @@ pub fn command() -> Command {
         .default_member_permissions(REQUIRED_PERMISSIONS)
         .build()
 }
-pub fn slashCommand() -> Command {
+pub fn slash_command() -> Command {
     let mut map = HashMap::new();
     map.insert(
         "fr".to_string(),
@@ -53,7 +53,7 @@ pub fn slashCommand() -> Command {
     .build()
 }
 
-pub fn slashCommand2() -> Command {
+pub fn slash_command2() -> Command {
     let mut map = HashMap::new();
     map.insert(
         "fr".to_string(),
@@ -84,14 +84,12 @@ impl InteractionContext<'_> {
     pub async fn handle_move_message_command(self) -> Result<()> {
         let message = self.handle_message_command()?;
         message::check(&message)?;
-
         let channel = self.wait_for_channel_select_interaction().await?;
         self.move_message(message, channel, true).await?;
         Ok(())
     }
-
     pub async fn handle_command_call(self) -> Result<()> {
-        let mut messageId: Option<String> = None;
+        let mut message_id: Option<String> = None;
         let mut result_channel: Option<Id<ChannelMarker>> = None;
         let mut remove: Option<bool> = None;
         let mut i_channel : Option<Channel> = None;
@@ -101,7 +99,7 @@ impl InteractionContext<'_> {
                     match option.name.as_str() {
                         "message_id" => {
                             if let CommandOptionValue::String(id) = &option.value{
-                                messageId = Some(id.clone());
+                                message_id = Some(id.clone());
                                 i_channel = self.interaction.channel.clone();
                             }
                         },
@@ -119,7 +117,7 @@ impl InteractionContext<'_> {
                             if let CommandOptionValue::String(link) = &option.value{
                                 let a = parse_message_link(link).unwrap();
                                 i_channel = Some(self.ctx.bot.http.channel(a.1).await?.model().await?);
-                                messageId = Some(a.2.to_string());
+                                message_id = Some(a.2.to_string());
                             }
                         }
                         _ =>{}
@@ -127,13 +125,13 @@ impl InteractionContext<'_> {
                 }
             }
         }
-        if messageId.is_none() || result_channel.is_none(){
+        if message_id.is_none() || result_channel.is_none(){
             return Err(anyhow!("Missing parameters"));
         }
         let message_id_num = Id::<MessageMarker>::new(
-            messageId.ok_or(anyhow!("Error unwraping message ID")).unwrap().parse().map_err(|_| anyhow!("Invalid message ID format"))?
+            message_id.ok_or(anyhow!("Error unwraping message ID")).unwrap().parse().map_err(|_| anyhow!("Invalid message ID format"))?
         );
-        if(i_channel.is_none()){
+        if i_channel.is_none() {
             return Err(anyhow!("Missing input channel"));
         }
         // Rest of your code remains the same

@@ -62,11 +62,11 @@ pub async fn set_commands(bot: &Bot) -> Result<()> {
     let commands = &[
         move_message::command(), 
         move_message_and_below::command(), 
-        move_message::slashCommand(), 
-        move_message_and_below::slashCommand(), 
-        move_message::slashCommand2(), 
-        move_message_and_below::slashCommand2(), 
-        move_to_channel::slashCommand(),
+        move_message::slash_command(), 
+        move_message_and_below::slash_command(), 
+        move_message::slash_command2(), 
+        move_message_and_below::slash_command2(), 
+        move_to_channel::slash_command(),
         move_to_until::slashCommand(),
         delete_messages::slashCommand(),
     ];

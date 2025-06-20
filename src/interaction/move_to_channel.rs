@@ -17,7 +17,7 @@ use twilight_util::builder::command::{
 
 pub const CHAT_INPUT_NAME: &str = "move_channel_to";
 
-pub fn slashCommand() -> Command {
+pub fn slash_command() -> Command {
     let mut map = HashMap::new();
     map.insert(
         "fr".to_string(),

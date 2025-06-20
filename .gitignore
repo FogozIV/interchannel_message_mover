@@ -117,5 +117,6 @@ Cargo.lock
 # Ignore all local history of files
 .history
 .ionide
+logs.txt
 
 # End of https://www.toptal.com/developers/gitignore/api/rust,rider,visualstudiocode,dotenv

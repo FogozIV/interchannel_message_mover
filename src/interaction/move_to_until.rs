@@ -70,7 +70,7 @@ impl InteractionContext<'_> {
                                 let parsed = parse_message_link(&id);
                                 let p = parsed?;
                                 from_message = Some(p.2);
-                                if(input_channel.is_none()){
+                                if input_channel.is_none() {
                                     input_channel = Some(p.1);
                                 }else{
                                     if(input_channel.unwrap() != p.1){
@@ -84,10 +84,10 @@ impl InteractionContext<'_> {
                                 let parsed = parse_message_link(&id);
                                 let p = parsed?;
                                 to_message = Some(p.2);
-                                if(input_channel.is_none()){
+                                if input_channel.is_none() {
                                     input_channel = Some(p.1);
                                 }else{
-                                    if(input_channel.unwrap() != p.1){
+                                    if input_channel.unwrap() != p.1 {
                                         return Err(anyhow!(NotInSameChannel))
                                     }
                                 }
