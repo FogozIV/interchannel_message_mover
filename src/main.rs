@@ -100,7 +100,7 @@ impl Context {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    dotenvy::dotenv()?;
+    dotenvy::dotenv().ok();
     let (mut bot, mut shards) = Bot::new(
         env::var("BOT_TOKEN")?,
         Intents::empty(),
